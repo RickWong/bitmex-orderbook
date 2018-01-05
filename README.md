@@ -2,6 +2,12 @@
 
 The fastest order book implementation for the BitMEX WebSocket API.
 
+* Fast & unthrottled price updates.
+* Automatically calculates cumulative prices.
+* Re-use an existing WebSocket connection.
+* Built-in heartbeat functionality.
+* Easy to use.
+
 ## Install
 
 ```sh
@@ -45,7 +51,7 @@ OrderBook.open("XBTH18", {
 * `options.onUpdate : Function(OrderBook)` - A function that is invoked whenever the prices are updated.
 * `options.socket : WebSocket` - An existing BitMEX WebSocket connection. If left empty a new WebSocket connection will be opened, and stored in `orderBook._client.socket`. 
 * `options.testmode : Boolean` - Connect to the BitMEX test environment. Only used if `options.socket` is empty. Default: `false`.
-* `options.hearbeat : Integer` - Milliseconds between WebSocket connection pings. Default: `15000`.
+* `options.heartbeat : Integer` - Milliseconds between WebSocket connection pings. Default: `15000`.
 * `options.endpoint : String` - Specifies the wss:// address for a new WebSocket connection. Only used if `options.socket` is empty. Default: `wss://www.bitmex.com/realtime`.
 
 Returns a Promise that resolves when the connection is opened.
