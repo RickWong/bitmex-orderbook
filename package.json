@@ -7,7 +7,7 @@
   "author": "Rick Wong <me@rick.codes>",
   "license": "MIT",
   "scripts": {
-    "example": "env DEBUG=* nodemon example.js",
+    "example": "env DEBUG=bitmex-* nodemon example.js",
     "prettier": "find . -type f \\( -iname \\*.js -o -iname \\*.css \\) | grep -v node_modules | xargs prettier --write",
     "precommit": "lint-staged"
   },

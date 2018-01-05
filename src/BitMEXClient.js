@@ -4,7 +4,7 @@ const WebSocket = require("ws");
 class BitMEXClient {
   constructor(options = {}) {
     this.socket = options.socket || null;
-    this.connected = this.ws && this.ws.readyState === WebSocket.OPEN;
+    this.connected = this.socket && this.socket.readyState === WebSocket.OPEN;
     this.authenticated = false;
     this.testmode = options.testmode === true || options.testmode === "true";
     this.endpoint =
@@ -19,34 +19,35 @@ class BitMEXClient {
     return new Promise((resolve, reject) => {
       if (!this.socket) {
         this.socket = new WebSocket(this.endpoint);
-        let heartbeatInterval;
-
-        this.socket.on("open", () => {
-          debug("Connection opened");
-          this.connected = this.socket.readyState === WebSocket.OPEN;
-          heartbeatInterval = setInterval(() => this.ping(), this.heartbeat);
-          this.subscriptions.forEach(symbol => this.subscribe(symbol));
-          return resolve(true);
-        });
-
-        this.socket.on("close", () => {
-          debug("Connection closed");
-          clearInterval(heartbeatInterval);
-          if (!this.connected) {
-            return reject(this.lastError);
-          }
-          this.connected = false;
-        });
-
-        this.socket.on("error", err => {
-          debug("Error:", err);
-          this.lastError = err;
-        });
       }
 
-      this.socket.on("message", message => {
-        // debug("Message:", message);
+      let heartbeatInterval;
+
+      this.socket.on("open", () => {
+        debug("Connection opened");
+        this.connected = this.socket.readyState === WebSocket.OPEN;
+        heartbeatInterval = setInterval(() => this.ping(), this.heartbeat);
+        this.subscriptions.forEach(symbol => this.subscribe(symbol));
+        return resolve(true);
       });
+
+      this.socket.on("close", () => {
+        debug("Connection closed");
+        clearInterval(heartbeatInterval);
+        if (!this.connected) {
+          return reject(this.lastError);
+        }
+        this.connected = false;
+      });
+
+      this.socket.on("error", err => {
+        debug("Error:", err);
+        this.lastError = err;
+      });
+
+      if (this.connected) {
+        return resolve(true);
+      }
     });
   }
 

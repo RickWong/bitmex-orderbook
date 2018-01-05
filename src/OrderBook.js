@@ -28,15 +28,10 @@ class OrderBook {
     return this;
   }
 
-  static async open({
+  static async open(
     symbol,
-    table = "orderBookL2",
-    depth = 10,
-    cumulative = true,
-    onUpdate,
-    socket,
-    ...options
-  }) {
+    { table = "orderBookL2", depth = 10, cumulative = true, onUpdate, socket, ...options },
+  ) {
     if (!symbol) {
       throw new Error("Missing option `symbol`");
     }
@@ -48,10 +43,7 @@ class OrderBook {
     const orderBook = new OrderBook({ symbol, table, depth, cumulative, onUpdate });
     orderBook._client = new BitMEXClient({ socket, ...options });
 
-    if (!socket) {
-      await orderBook._client.open();
-    }
-
+    await orderBook._client.open();
     await orderBook._client.subscribe(orderBook.symbol, orderBook.table);
     orderBook._client.socket.on("message", message => this.onMessage(orderBook, message));
 
@@ -184,17 +176,17 @@ class OrderBook {
       entries.forEach(entry => entry && orderBook._bids.set(entry.id, entry));
     }
 
-    if (orderBook.onUpdate) {
-      orderBook.onUpdate();
+    if (dirty._asks || dirty._bids) {
+      orderBook.onUpdate && orderBook.onUpdate(orderBook);
     }
   }
 
-  getAskPrices(start = 0, count = 5) {
-    return this._asks.toArray().slice(start, count);
+  getAskPrices(count = 0, skip = 0) {
+    return this._asks.toArray().slice(skip, Math.min(count || this.depth, this.depth));
   }
 
-  getBidPrices(start = 0, count = 5) {
-    return this._bids.toArray().slice(start, count);
+  getBidPrices(count = 0, skip = 0) {
+    return this._bids.toArray().slice(skip, Math.min(count || this.depth, this.depth));
   }
 }
 
