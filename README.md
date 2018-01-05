@@ -20,7 +20,7 @@ OrderBook.open("XBTH18", {
     // Top 10 ask prices.
     const bestAskPrices = orderBookL2.getAskPrices(10);
     
-    // Top 5 bid prices, starting at third best (index: 2).
+    // Top 5 bid prices, skipping the first 2.
     const [thirdBestBid] = orderBookL2.getBidprices(5, 2); 
     
     thirdBestBid.side; // "Buy"
