@@ -8,14 +8,14 @@ const main = async () => {
   });
 
   const orderBook10 = await OrderBook.open({
-    socket: orderBookL2.client.socket,
+    socket: orderBookL2._client.socket,
     symbol: "XBTH18",
     table: "orderBook10",
     onUpdate() {
       console.log("L2");
-      console.table(orderBookL2.getAskPrices());
+      console.table(orderBookL2.getBidPrices());
       console.log("10");
-      console.table(orderBook10.getAskPrices());
+      console.table(orderBook10.getBidPrices());
     },
   });
 };
