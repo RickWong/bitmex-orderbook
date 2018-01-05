@@ -11,7 +11,7 @@ class BitMEXClient {
       options.endpoint ||
       (this.testmode ? "wss://testnet.bitmex.com/realtime" : "wss://www.bitmex.com/realtime");
     this.heartbeat = options.heartbeat || 15 * 1000;
-    this.subscriptions = new Set([]);
+    this.subscriptions = new Set();
     this.lastError = null;
   }
 

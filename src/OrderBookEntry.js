@@ -2,11 +2,11 @@ class OrderBookEntry {
   constructor(data) {
     this.symbol = "";
     this.side = "";
-    this.id = 0;
     this.price = 0;
     this.size = 0;
     this.cumulative = null;
     this.timestamp = new Date();
+    this.id = 0;
 
     this.assign(data);
   }
