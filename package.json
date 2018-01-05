@@ -1,6 +1,6 @@
 {
   "name": "bitmex-orderbook",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "BitMEX WebSocket-driven Orderbook",
   "main": "src/OrderBook.js",
   "repository": "https://github.com/RickWong/bitmex-orderbook",
