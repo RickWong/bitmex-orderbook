@@ -181,11 +181,11 @@ class OrderBook {
   }
 
   getAskPrices(count = 0, skip = 0) {
-    return [...this._asks.values()].slice(skip, Math.min(count || this.depth, this.depth));
+    return [...this._asks.values()].slice(skip, skip + Math.min(count || this.depth, this.depth));
   }
 
   getBidPrices(count = 0, skip = 0) {
-    return [...this._bids.values()].slice(skip, Math.min(count || this.depth, this.depth));
+    return [...this._bids.values()].slice(skip, skip + Math.min(count || this.depth, this.depth));
   }
 }
 
