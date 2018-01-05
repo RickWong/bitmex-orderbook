@@ -1,5 +1,4 @@
 const debug = require("debug")("bitmex-orderbook");
-const FastMap = require("collections/fast-map");
 const BitMEXClient = require("./BitMEXClient");
 const OrderBookEntry = require("./OrderBookEntry");
 
@@ -12,8 +11,8 @@ class OrderBook {
     this.onUpdate = null;
 
     this._client = null;
-    this._asks = new FastMap();
-    this._bids = new FastMap();
+    this._asks = new Map();
+    this._bids = new Map();
 
     this.assign(data);
   }
@@ -141,7 +140,7 @@ class OrderBook {
     }
 
     if (dirty._asks) {
-      let entries = orderBook._asks.sorted((a1, a2) => a1.price - a2.price);
+      let entries = [...orderBook._asks.values()].sort((a1, a2) => a1.price - a2.price);
 
       if (entries.length > orderBook.depth * 2) {
         entries = entries.slice(0, orderBook.depth);
@@ -159,7 +158,7 @@ class OrderBook {
     }
 
     if (dirty._bids) {
-      let entries = orderBook._bids.sorted((b1, b2) => b2.price - b1.price);
+      let entries = [...orderBook._bids.values()].sort((b1, b2) => b2.price - b1.price);
 
       if (entries.length > orderBook.depth * 2) {
         entries = entries.slice(0, orderBook.depth);
@@ -182,11 +181,11 @@ class OrderBook {
   }
 
   getAskPrices(count = 0, skip = 0) {
-    return this._asks.toArray().slice(skip, Math.min(count || this.depth, this.depth));
+    return [...this._asks.values()].slice(skip, Math.min(count || this.depth, this.depth));
   }
 
   getBidPrices(count = 0, skip = 0) {
-    return this._bids.toArray().slice(skip, Math.min(count || this.depth, this.depth));
+    return [...this._bids.values()].slice(skip, Math.min(count || this.depth, this.depth));
   }
 }
 

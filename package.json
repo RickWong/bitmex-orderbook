@@ -22,7 +22,6 @@
     ]
   },
   "dependencies": {
-    "collections": "5.1.2",
     "ws": "3.3.3"
   },
   "devDependencies": {
