@@ -1,10 +1,10 @@
-# BitMEX OrderBook
+# BitMEX Order Book
 
 The fastest order book implementation for the BitMEX WebSocket API.
 
-* Fast & unthrottled price updates.
+* Fast & unthrottled price updates from L2 table.
 * Automatically calculates cumulative prices.
-* Re-use an existing WebSocket connection.
+* Reuse an existing WebSocket connection.
 * Built-in heartbeat functionality.
 * Easy to use.
 
@@ -21,13 +21,13 @@ Or you can use `npm install`.
 ```js
 const OrderBook = require("bitmex-orderbook");
 
-OrderBook.open("XBTH18", {
-  onUpdate(orderBookL2) {
+await OrderBook.open("XBTH18", {
+  onUpdate(orderBook) {
     // Top 10 ask prices.
-    const bestAskPrices = orderBookL2.getAskPrices(10);
+    const bestAskPrices = orderBook.getAskPrices(10);
     
     // Top 5 bid prices, skipping the first 2.
-    const [thirdBestBid] = orderBookL2.getBidprices(5, 2); 
+    const [thirdBestBid] = orderBook.getBidprices(5, 2); 
     
     thirdBestBid.side; // "Buy"
     thirdBestBid.price; // 17341.5
@@ -42,7 +42,7 @@ OrderBook.open("XBTH18", {
 
 ## Documentation
 
-### `OrderBook.open(symbol, options = {}): Promise`
+### `OrderBook.open(symbol, options = {}): Promise<OrderBook>`
 
 * `symbol : String` - The instrument symbol. Required.
 * `options.table : String` - The order book table to subscribe to. Default: `orderBookL2`, the fastest table on BitMEX.
