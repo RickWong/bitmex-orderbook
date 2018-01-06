@@ -1,11 +1,11 @@
 # BitMEX Order Book
 
-The fastest order book implementation for the BitMEX WebSocket API.
+The fastest order book implementation for the [BitMEX WebSocket API](https://www.bitmex.com/app/wsAPI).
 
 * Fast & unthrottled price updates from L2 table.
 * Automatically calculates cumulative prices.
 * Reuse an existing WebSocket connection.
-* Built-in heartbeat functionality.
+* Built-in [heartbeats](https://www.bitmex.com/app/wsAPI#Heartbeats) functionality.
 * Easy to use.
 
 ## Install
@@ -64,7 +64,7 @@ Returns a Promise that resolves when the connection is opened.
 
 ### `orderBook.getBidPrices(count, skip = 0) : OrderBookEntry`
 
-Same as `getAskPrices`. Also sorted by best price first.
+Same as `orderBook.getAskPrices()`. Sorted by best price first.
 
 ## License
 
