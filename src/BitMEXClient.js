@@ -3,16 +3,17 @@ const debug = require("debug")("bitmex-orderbook");
 const WebSocket = require("ws");
 
 class BitMEXClient {
-  constructor(options = {}) {
-    this.socket = options.socket || null;
+  constructor({ socket, endpoint, apiKey, apiSecret, testmode, heartbeat, ...socketOptions } = {}) {
+    this.socketOptions = socketOptions;
+    this.socket = socket || null;
     this.connected = this.socket && this.socket.readyState === WebSocket.OPEN;
-    this.apiKey = options.apiKey || null;
-    this.apiSecret = options.apiSecret || null;
-    this.testmode = options.testmode === true || options.testmode === "true";
+    this.apiKey = apiKey || null;
+    this.apiSecret = apiSecret || null;
+    this.testmode = testmode === true || testmode === "true";
     this.endpoint =
-      options.endpoint ||
+      endpoint ||
       (this.testmode ? "wss://testnet.bitmex.com/realtime" : "wss://www.bitmex.com/realtime");
-    this.heartbeat = options.heartbeat || 15 * 1000;
+    this.heartbeat = heartbeat || 15 * 1000;
     this.subscriptions = new Set();
     this.lastError = null;
   }
@@ -20,7 +21,7 @@ class BitMEXClient {
   async open() {
     return new Promise((resolve, reject) => {
       if (!this.socket) {
-        this.socket = new WebSocket(this.endpoint);
+        this.socket = new WebSocket(this.endpoint, this.socketOptions);
       }
 
       let heartbeatInterval;
